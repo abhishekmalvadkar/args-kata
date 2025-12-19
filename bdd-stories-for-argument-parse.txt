@@ -1,0 +1,9 @@
+Build Argument Parser
+
+Given
+   -l only as command line argument
+When
+    I call parse() method of ArgumentParser with passing list of string arguments with only -l
+Then
+    It should return an Argument object with logging true value
+
