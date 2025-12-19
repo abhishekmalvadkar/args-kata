@@ -14,4 +14,11 @@ public class ArgumentParserTest {
 
         assertThat(argument.logging()).isTrue();
     }
+
+    @Test
+    void given_dash_l_false_as_argument_list_then_return_argument_object_with_logging_false() {
+        Argument argument = ArgumentParser.parse(List.of("-l","false"));
+
+        assertThat(argument.logging()).isFalse();
+    }
 }

@@ -7,3 +7,10 @@ When
 Then
     It should return an Argument object with logging true value
 
+Given
+   -l false command line arguments
+When
+    I call parse() method of ArgumentParser with passing list of string arguments with only -l false
+Then
+    It should return an Argument object with logging false
+
