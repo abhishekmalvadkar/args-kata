@@ -21,4 +21,12 @@ public class ArgumentParserTest {
 
         assertThat(argument.logging()).isFalse();
     }
+
+    @Test
+    void given_dash_l_dash_v_as_argument_list_then_return_argument_object_with_logging_true_verbose_true() {
+        Argument argument = ArgumentParser.parse(List.of("-l","-v"));
+
+        assertThat(argument.logging()).isTrue();
+        assertThat(argument.verbose()).isTrue();
+    }
 }

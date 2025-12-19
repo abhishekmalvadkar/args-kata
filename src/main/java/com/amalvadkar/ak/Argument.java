@@ -14,4 +14,8 @@ public class Argument {
     public boolean logging() {
         return logging;
     }
+
+    public boolean verbose() {
+        return false;
+    }
 }
