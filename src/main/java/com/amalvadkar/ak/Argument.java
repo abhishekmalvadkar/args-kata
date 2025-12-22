@@ -29,13 +29,8 @@ public class Argument {
                     if (isFlag(nextElement)) {
                         ReflectionUtils.setField(argument, schema.mappingName(), schema.defaultValue());
                     } else {
-                        if (schema.type().equals(Boolean.class)) {
-                            ReflectionUtils.setField(argument, schema.mappingName(), Boolean.parseBoolean(nextElement));
-                        } else if (schema.type().equals(Integer.class)) {
-                            ReflectionUtils.setField(argument, schema.mappingName(), Integer.parseInt(nextElement));
-                        } else {
-                            ReflectionUtils.setField(argument, schema.mappingName(), nextElement);
-                        }
+                        Object flagValue = schema.valueTransformer().apply(nextElement);
+                        ReflectionUtils.setField(argument, schema.mappingName(), flagValue);
                     }
                 }
             }
