@@ -12,15 +12,14 @@ import java.util.function.Function;
 @Getter
 @Accessors(fluent = true)
 public enum Schema {
-    LOGGING("logging", "-l",true, Boolean.class, Boolean::parseBoolean),
-    VERBOSE("verbose", "-v", true, Boolean.class, Boolean::parseBoolean),
-    PORT("port", "-p", 0, Integer.class, Integer::parseInt),
-    LOG_DIR("logDir", "-d", "", String.class, value -> value);
+    LOGGING("logging", "-l",true, Boolean::parseBoolean),
+    VERBOSE("verbose", "-v", true, Boolean::parseBoolean),
+    PORT("port", "-p", 0, Integer::parseInt),
+    LOG_DIR("logDir", "-d", "", value -> value);
 
     private final String mappingName;
     private final String flag;
     private final Object defaultValue;
-    private final Class<?> type;
     private final Function<String, Object> valueTransformer;
 
     public static Schema from(String flag){
