@@ -77,4 +77,15 @@ public class ArgumentParserTest {
         assertThat(argument.directory()).isEmpty();
 
     }
+
+    @Test
+    void given_dash_l_only_argument_list_then_return_argument_object_with_logging_true_others_with_default_values() {
+        Argument argument = Argument.parse(List.of("-l"));
+
+        assertThat(argument.logging()).isTrue();
+        assertThat(argument.verbose()).isFalse();
+        assertThat(argument.port()).isEqualTo(0);
+        assertThat(argument.directory()).isEmpty();
+
+    }
 }

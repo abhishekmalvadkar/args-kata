@@ -13,7 +13,7 @@ public class Argument {
     private boolean logging;
     private boolean verbose;
     private int port;
-    private String directory;
+    private String directory = "";
 
     public static Argument parse(List<String> arguments) {
         Argument argument = new Argument();
