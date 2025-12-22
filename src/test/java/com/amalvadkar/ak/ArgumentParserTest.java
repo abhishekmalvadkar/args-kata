@@ -10,21 +10,21 @@ public class ArgumentParserTest {
 
     @Test
     void given_dash_l_as_argument_list_then_return_argument_object_with_logging_true() {
-        Argument argument = ArgumentParser.parse(List.of("-l"));
+        Argument argument = Argument.parse(List.of("-l"));
 
         assertThat(argument.logging()).isTrue();
     }
 
     @Test
     void given_dash_l_false_as_argument_list_then_return_argument_object_with_logging_false() {
-        Argument argument = ArgumentParser.parse(List.of("-l","false"));
+        Argument argument = Argument.parse(List.of("-l","false"));
 
         assertThat(argument.logging()).isFalse();
     }
 
     @Test
     void given_dash_l_dash_v_as_argument_list_then_return_argument_object_with_logging_true_verbose_true() {
-        Argument argument = ArgumentParser.parse(List.of("-l","-v"));
+        Argument argument = Argument.parse(List.of("-l","-v"));
 
         assertThat(argument.logging()).isTrue();
         assertThat(argument.verbose()).isTrue();
@@ -32,7 +32,7 @@ public class ArgumentParserTest {
 
     @Test
     void given_dash_v_dash_l_as_argument_list_then_return_argument_object_with_verbose_true_logging_true() {
-        Argument argument = ArgumentParser.parse(List.of("-v","-l"));
+        Argument argument = Argument.parse(List.of("-v","-l"));
 
         assertThat(argument.logging()).isTrue();
         assertThat(argument.verbose()).isTrue();
@@ -40,7 +40,7 @@ public class ArgumentParserTest {
 
     @Test
     void given_dash_v_dash_l_dash_p_8080_as_argument_list_then_return_argument_object_with_verbose_true_logging_true_port_8080() {
-        Argument argument = ArgumentParser.parse(List.of("-v","-l","-p", "8080"));
+        Argument argument = Argument.parse(List.of("-v","-l","-p", "8080"));
 
         assertThat(argument.logging()).isTrue();
         assertThat(argument.verbose()).isTrue();
@@ -49,7 +49,7 @@ public class ArgumentParserTest {
 
     @Test
     void given_dash_v_dash_l_dash_p_as_argument_list_then_return_argument_object_with_verbose_true_logging_true_port_0() {
-        Argument argument = ArgumentParser.parse(List.of("-v","-l","-p"));
+        Argument argument = Argument.parse(List.of("-v","-l","-p"));
 
         assertThat(argument.logging()).isTrue();
         assertThat(argument.verbose()).isTrue();
@@ -58,7 +58,7 @@ public class ArgumentParserTest {
 
     @Test
     void given_dash_v_dash_l_dash_p_dash_d_slash_usr_slash_logs_as_argument_list_then_return_argument_object_with_verbose_true_logging_true_port_0_directory_slash_usr_slash_logs() {
-        Argument argument = ArgumentParser.parse(List.of("-v","-l","-p", "-d", "/usr/logs"));
+        Argument argument = Argument.parse(List.of("-v","-l","-p", "-d", "/usr/logs"));
 
         assertThat(argument.logging()).isTrue();
         assertThat(argument.verbose()).isTrue();
@@ -69,7 +69,7 @@ public class ArgumentParserTest {
 
     @Test
     void given_dash_v_dash_l_dash_p_dash_d_as_argument_list_then_return_argument_object_with_verbose_true_logging_true_port_0_directory_empty() {
-        Argument argument = ArgumentParser.parse(List.of("-v","-l","-p", "-d"));
+        Argument argument = Argument.parse(List.of("-v","-l","-p", "-d"));
 
         assertThat(argument.logging()).isTrue();
         assertThat(argument.verbose()).isTrue();
