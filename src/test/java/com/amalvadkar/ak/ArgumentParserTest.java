@@ -37,4 +37,22 @@ public class ArgumentParserTest {
         assertThat(argument.logging()).isTrue();
         assertThat(argument.verbose()).isTrue();
     }
+
+    @Test
+    void given_dash_v_dash_l_dash_p_8080_as_argument_list_then_return_argument_object_with_verbose_true_logging_true_port_8080() {
+        Argument argument = ArgumentParser.parse(List.of("-v","-l","-p", "8080"));
+
+        assertThat(argument.logging()).isTrue();
+        assertThat(argument.verbose()).isTrue();
+        assertThat(argument.port()).isEqualTo(8080);
+    }
+
+    @Test
+    void given_dash_v_dash_l_dash_p_as_argument_list_then_return_argument_object_with_verbose_true_logging_true_port_0() {
+        Argument argument = ArgumentParser.parse(List.of("-v","-l","-p"));
+
+        assertThat(argument.logging()).isTrue();
+        assertThat(argument.verbose()).isTrue();
+        assertThat(argument.port()).isEqualTo(0);
+    }
 }

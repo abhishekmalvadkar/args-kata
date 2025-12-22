@@ -31,6 +31,19 @@ public class ArgumentParser {
                 }
             }
         }
+        if (arguments.contains("-p")) {
+            int portFlagPosition = arguments.indexOf("-p");
+            if (flagAtLastPosition(arguments, portFlagPosition)) {
+                argument.port(0);
+            } else {
+                String nextElement = arguments.get(portFlagPosition + 1);
+                if (nextElement.startsWith("-")) {
+                    argument.port(0);
+                } else {
+                    argument.port(Integer.parseInt(nextElement));
+                }
+            }
+        }
         return argument;
     }
 

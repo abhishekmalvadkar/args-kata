@@ -10,4 +10,5 @@ import lombok.experimental.Accessors;
 public class Argument {
     private boolean logging;
     private boolean verbose;
+    private int port;
 }
