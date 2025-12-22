@@ -13,7 +13,7 @@ public class Argument {
     private boolean logging;
     private boolean verbose;
     private int port;
-    private String directory = "";
+    private String logDir = "";
 
     public static Argument parse(List<String> arguments) {
         Argument argument = new Argument();
@@ -57,15 +57,15 @@ public class Argument {
             }
         }
         if (arguments.contains("-d")) {
-            int directoryFlagPosition = arguments.indexOf("-d");
-            if (flagAtLastPosition(arguments, directoryFlagPosition)) {
-                argument.directory("");
+            int logDirFlagPosition = arguments.indexOf("-d");
+            if (flagAtLastPosition(arguments, logDirFlagPosition)) {
+                argument.logDir("");
             } else {
-                String nextElement = arguments.get(directoryFlagPosition + 1);
+                String nextElement = arguments.get(logDirFlagPosition + 1);
                 if (nextElement.startsWith("-")) {
-                    argument.directory("");
+                    argument.logDir("");
                 } else {
-                    argument.directory(nextElement);
+                    argument.logDir(nextElement);
                 }
             }
         }
@@ -89,7 +89,7 @@ public class Argument {
                 logging,
                 verbose,
                 port,
-                directory
+                logDir
         );
     }
 }

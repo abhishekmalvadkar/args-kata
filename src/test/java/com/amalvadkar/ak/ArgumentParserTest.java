@@ -63,7 +63,7 @@ public class ArgumentParserTest {
         assertThat(argument.logging()).isTrue();
         assertThat(argument.verbose()).isTrue();
         assertThat(argument.port()).isEqualTo(0);
-        assertThat(argument.directory()).isEqualTo("/usr/logs");
+        assertThat(argument.logDir()).isEqualTo("/usr/logs");
 
     }
 
@@ -74,7 +74,7 @@ public class ArgumentParserTest {
         assertThat(argument.logging()).isTrue();
         assertThat(argument.verbose()).isTrue();
         assertThat(argument.port()).isEqualTo(0);
-        assertThat(argument.directory()).isEmpty();
+        assertThat(argument.logDir()).isEmpty();
 
     }
 
@@ -85,7 +85,7 @@ public class ArgumentParserTest {
         assertThat(argument.logging()).isTrue();
         assertThat(argument.verbose()).isFalse();
         assertThat(argument.port()).isEqualTo(0);
-        assertThat(argument.directory()).isEmpty();
+        assertThat(argument.logDir()).isEmpty();
 
     }
 }
