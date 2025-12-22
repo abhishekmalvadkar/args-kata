@@ -29,4 +29,12 @@ public class ArgumentParserTest {
         assertThat(argument.logging()).isTrue();
         assertThat(argument.verbose()).isTrue();
     }
+
+    @Test
+    void given_dash_v_dash_l_as_argument_list_then_return_argument_object_with_verbose_true_logging_true() {
+        Argument argument = ArgumentParser.parse(List.of("-v","-l"));
+
+        assertThat(argument.logging()).isTrue();
+        assertThat(argument.verbose()).isTrue();
+    }
 }

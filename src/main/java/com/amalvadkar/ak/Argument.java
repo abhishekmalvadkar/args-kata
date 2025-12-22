@@ -1,21 +1,13 @@
 package com.amalvadkar.ak;
 
+import lombok.Getter;
+import lombok.Setter;
+import lombok.experimental.Accessors;
+
+@Setter
+@Getter
+@Accessors(fluent = true)
 public class Argument {
-    private final boolean logging;
-
-    public Argument(boolean logging) {
-        this.logging = logging;
-    }
-
-    public static Argument withLogging(boolean logging) {
-        return new Argument(logging);
-    }
-
-    public boolean logging() {
-        return logging;
-    }
-
-    public boolean verbose() {
-        return false;
-    }
+    private boolean logging;
+    private boolean verbose;
 }
