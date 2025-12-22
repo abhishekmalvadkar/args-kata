@@ -75,4 +75,21 @@ public class Argument {
     private static boolean flagAtLastPosition(List<String> arguments, int loggingFlagPosition) {
         return loggingFlagPosition == arguments.size() - 1;
     }
+
+    @Override
+    public String toString() {
+        return """
+                {
+                    "logging" : %s,
+                    "verbose" : %s,
+                    "port" : %s,
+                    "directory" : "%s"
+                }
+                """.formatted(
+                logging,
+                verbose,
+                port,
+                directory
+        );
+    }
 }
