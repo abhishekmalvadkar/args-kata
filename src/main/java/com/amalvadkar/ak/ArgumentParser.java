@@ -44,6 +44,19 @@ public class ArgumentParser {
                 }
             }
         }
+        if (arguments.contains("-d")) {
+            int directoryFlagPosition = arguments.indexOf("-d");
+            if (flagAtLastPosition(arguments, directoryFlagPosition)) {
+                argument.directory("");
+            } else {
+                String nextElement = arguments.get(directoryFlagPosition + 1);
+                if (nextElement.startsWith("-")) {
+                    argument.directory("");
+                } else {
+                    argument.directory(nextElement);
+                }
+            }
+        }
         return argument;
     }
 

@@ -55,4 +55,26 @@ public class ArgumentParserTest {
         assertThat(argument.verbose()).isTrue();
         assertThat(argument.port()).isEqualTo(0);
     }
+
+    @Test
+    void given_dash_v_dash_l_dash_p_dash_d_slash_usr_slash_logs_as_argument_list_then_return_argument_object_with_verbose_true_logging_true_port_0_directory_slash_usr_slash_logs() {
+        Argument argument = ArgumentParser.parse(List.of("-v","-l","-p", "-d", "/usr/logs"));
+
+        assertThat(argument.logging()).isTrue();
+        assertThat(argument.verbose()).isTrue();
+        assertThat(argument.port()).isEqualTo(0);
+        assertThat(argument.directory()).isEqualTo("/usr/logs");
+
+    }
+
+    @Test
+    void given_dash_v_dash_l_dash_p_dash_d_as_argument_list_then_return_argument_object_with_verbose_true_logging_true_port_0_directory_empty() {
+        Argument argument = ArgumentParser.parse(List.of("-v","-l","-p", "-d"));
+
+        assertThat(argument.logging()).isTrue();
+        assertThat(argument.verbose()).isTrue();
+        assertThat(argument.port()).isEqualTo(0);
+        assertThat(argument.directory()).isEmpty();
+
+    }
 }

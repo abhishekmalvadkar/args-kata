@@ -11,4 +11,5 @@ public class Argument {
     private boolean logging;
     private boolean verbose;
     private int port;
+    private String directory;
 }
