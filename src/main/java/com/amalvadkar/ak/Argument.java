@@ -17,59 +17,34 @@ public class Argument {
 
     public static Argument parse(List<String> arguments) {
         Argument argument = new Argument();
-        if (arguments.contains("-l")) {
-            int loggingFlagPosition = arguments.indexOf("-l");
-            if (flagAtLastPosition(arguments, loggingFlagPosition)) {
-                argument.logging(true);
-            } else {
-                String nextElement = arguments.get(loggingFlagPosition + 1);
-                if (nextElement.startsWith("-")) {
-                    argument.logging(true);
+
+        for (String arg : arguments) {
+            if (isFlag(arg)) {
+                int argPosition = arguments.indexOf(arg);
+                Schema schema = Schema.from(arg);
+                if (flagAtLastPosition(arguments, argPosition)) {
+                    ReflectionUtils.setField(argument, schema.mappingName(), schema.defaultValue());
                 } else {
-                    argument.logging(Boolean.parseBoolean(nextElement));
-                }
-            }
-        }
-        if (arguments.contains("-v")) {
-            int verboseFlagPosition = arguments.indexOf("-v");
-            if (flagAtLastPosition(arguments, verboseFlagPosition)) {
-                argument.verbose(true);
-            } else {
-                String nextElement = arguments.get(verboseFlagPosition + 1);
-                if (nextElement.startsWith("-")) {
-                    argument.verbose(true);
-                } else {
-                    argument.verbose(Boolean.parseBoolean(nextElement));
-                }
-            }
-        }
-        if (arguments.contains("-p")) {
-            int portFlagPosition = arguments.indexOf("-p");
-            if (flagAtLastPosition(arguments, portFlagPosition)) {
-                argument.port(0);
-            } else {
-                String nextElement = arguments.get(portFlagPosition + 1);
-                if (nextElement.startsWith("-")) {
-                    argument.port(0);
-                } else {
-                    argument.port(Integer.parseInt(nextElement));
-                }
-            }
-        }
-        if (arguments.contains("-d")) {
-            int logDirFlagPosition = arguments.indexOf("-d");
-            if (flagAtLastPosition(arguments, logDirFlagPosition)) {
-                argument.logDir("");
-            } else {
-                String nextElement = arguments.get(logDirFlagPosition + 1);
-                if (nextElement.startsWith("-")) {
-                    argument.logDir("");
-                } else {
-                    argument.logDir(nextElement);
+                    String nextElement = arguments.get(argPosition + 1);
+                    if (isFlag(nextElement)) {
+                        ReflectionUtils.setField(argument, schema.mappingName(), schema.defaultValue());
+                    } else {
+                        if (schema.type().equals(Boolean.class)) {
+                            ReflectionUtils.setField(argument, schema.mappingName(), Boolean.parseBoolean(nextElement));
+                        } else if (schema.type().equals(Integer.class)) {
+                            ReflectionUtils.setField(argument, schema.mappingName(), Integer.parseInt(nextElement));
+                        } else {
+                            ReflectionUtils.setField(argument, schema.mappingName(), nextElement);
+                        }
+                    }
                 }
             }
         }
         return argument;
+    }
+
+    private static boolean isFlag(String arg) {
+        return arg.startsWith("-");
     }
 
     private static boolean flagAtLastPosition(List<String> arguments, int loggingFlagPosition) {
