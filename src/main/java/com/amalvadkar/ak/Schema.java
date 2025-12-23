@@ -22,6 +22,8 @@ public enum Schema {
 
     private static final Map<String, Schema> FLAG_TO_SCHEMA_MAP = Stream.of(values())
             .collect(Collectors.toMap(Schema::flag, Function.identity()));
+    private static final List<String> SORTED_FLAGS = FLAG_TO_SCHEMA_MAP.keySet()
+            .stream().sorted().toList();
     private static final String LINE_BREAK = "\n";
 
     private final String mappingName;
@@ -57,17 +59,11 @@ public enum Schema {
 
     private static List<String> prepareValidFlagInfos() {
         List<String> flagInfos = new ArrayList<>();
-        for (String flag : sortedFlags()) {
+        for (String flag : SORTED_FLAGS) {
             Schema schema = FLAG_TO_SCHEMA_MAP.get(flag);
             flagInfos.add("%s : %s".formatted(flag, schema.description));
         }
         return flagInfos;
     }
 
-    private static List<String> sortedFlags() {
-        return FLAG_TO_SCHEMA_MAP.keySet()
-                .stream()
-                .sorted()
-                .toList();
-    }
 }
