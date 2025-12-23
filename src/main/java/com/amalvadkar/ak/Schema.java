@@ -22,6 +22,7 @@ public enum Schema {
 
     private static final Map<String, Schema> FLAG_TO_SCHEMA_MAP = Stream.of(values())
             .collect(Collectors.toMap(Schema::flag, Function.identity()));
+    private static final String LINE_BREAK = "\n";
 
     private final String mappingName;
     private final String flag;
@@ -30,27 +31,37 @@ public enum Schema {
     private final Function<String, Object> valueTransformer;
 
     public static Schema from(String flag){
-        Schema schema = FLAG_TO_SCHEMA_MAP.get(flag);
-        if (schema == null) {
-            String message = """
-                    Invalid flag : %s
-                    
-                    %s""".formatted(flag, info());
-            throw new InvalidFlagException(message);
+        if (isNotAvailableInSchema(flag)) {
+            throw new InvalidFlagException(withInvalidFlagMessage(flag));
         }
-        return schema;
+        return FLAG_TO_SCHEMA_MAP.get(flag);
     }
 
-    public static String info(){
+    private static String withInvalidFlagMessage(String flag) {
+        return """
+                Invalid flag : %s
+                
+                %s""".formatted(flag, validFlagsInfo());
+    }
+
+    private static boolean isNotAvailableInSchema(String flag) {
+        return FLAG_TO_SCHEMA_MAP.get(flag) == null;
+    }
+
+    private static String validFlagsInfo(){
+        return """
+                Valid flags:
+                
+                %s""".formatted(String.join(LINE_BREAK, prepareValidFlagInfos()));
+    }
+
+    private static List<String> prepareValidFlagInfos() {
         List<String> flagInfos = new ArrayList<>();
         for (String flag : sortedFlags()) {
             Schema schema = FLAG_TO_SCHEMA_MAP.get(flag);
             flagInfos.add("%s : %s".formatted(flag, schema.description));
         }
-        return """
-                Valid flags:
-                
-                %s""".formatted(String.join("\n", flagInfos));
+        return flagInfos;
     }
 
     private static List<String> sortedFlags() {
