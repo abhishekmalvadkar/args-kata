@@ -5,6 +5,7 @@ import org.junit.jupiter.api.Test;
 import java.util.List;
 
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.assertj.core.api.Assertions.assertThatThrownBy;
 
 public class ArgumentParserTest {
 
@@ -87,5 +88,21 @@ public class ArgumentParserTest {
         assertThat(argument.port()).isEqualTo(0);
         assertThat(argument.logDir()).isEmpty();
 
+    }
+
+    @Test
+    void given_dash_v_dash__true_l_dash_true_p_dash_9090_d_var_slash_logs_dash_c_as_argument_list_then_throw_exception_with_message_dash_c_colon_invalid_flag_with_valid_flags_info() {
+        assertThatThrownBy(() -> Argument.parse(List.of("-v","true","-l", "true","-p","9090", "-d", "/var/logs", "-c")))
+                .isInstanceOf(InvalidFlagException.class)
+                .hasMessage("""
+                        Invalid flag : -c
+                        
+                        Valid flags:
+                        
+                        -l : For logging
+                        -v : For verbose
+                        -p : For port
+                        -d : For log directory
+                        """);
     }
 }

@@ -27,6 +27,20 @@ public enum Schema {
     private final Function<String, Object> valueTransformer;
 
     public static Schema from(String flag){
-        return FLAG_TO_SCHEMA_MAP.get(flag);
+        Schema schema = FLAG_TO_SCHEMA_MAP.get(flag);
+        if (schema == null) {
+            String message = """
+                    Invalid flag : %s
+                    
+                    Valid flags:
+                    
+                    -l : For logging
+                    -v : For verbose
+                    -p : For port
+                    -d : For log directory
+                    """.formatted(flag);
+            throw new InvalidFlagException(message);
+        }
+        return schema;
     }
 }
