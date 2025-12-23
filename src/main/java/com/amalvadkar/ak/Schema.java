@@ -25,6 +25,14 @@ public enum Schema {
     private static final List<String> SORTED_FLAGS = FLAG_TO_SCHEMA_MAP.keySet()
             .stream().sorted().toList();
     private static final String LINE_BREAK = "\n";
+    private static final String VALID_FLAGS_INFO_MESSAGE = """
+            Valid flags:
+            
+            %s""".formatted(validFlags());
+    private static final String INVALID_FLAG_MESSAGE = """
+            Invalid flag : %s
+            
+            %s""";
 
     private final String mappingName;
     private final String flag;
@@ -40,30 +48,20 @@ public enum Schema {
     }
 
     private static String withInvalidFlagMessage(String flag) {
-        return """
-                Invalid flag : %s
-                
-                %s""".formatted(flag, validFlagsInfo());
+        return INVALID_FLAG_MESSAGE.formatted(flag, VALID_FLAGS_INFO_MESSAGE);
     }
 
     private static boolean isNotAvailableInSchema(String flag) {
         return FLAG_TO_SCHEMA_MAP.get(flag) == null;
     }
 
-    private static String validFlagsInfo(){
-        return """
-                Valid flags:
-                
-                %s""".formatted(String.join(LINE_BREAK, prepareValidFlagInfos()));
-    }
-
-    private static List<String> prepareValidFlagInfos() {
+    private static String validFlags() {
         List<String> flagInfos = new ArrayList<>();
         for (String flag : SORTED_FLAGS) {
             Schema schema = FLAG_TO_SCHEMA_MAP.get(flag);
             flagInfos.add("%s : %s".formatted(flag, schema.description));
         }
-        return flagInfos;
+        return String.join(LINE_BREAK, flagInfos);
     }
 
 }
