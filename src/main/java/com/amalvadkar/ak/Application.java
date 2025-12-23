@@ -5,8 +5,12 @@ import java.util.List;
 public class Application {
 
 	public static void main(String[] args) {
-		Argument argument = Argument.parse(List.of(args));
-		IO.println(argument);
-	}
+        try {
+            Argument argument = Argument.parse(List.of(args));
+            IO.println(argument);
+        } catch (InvalidFlagException e) {
+			IO.print(e.getMessage());
+        }
+    }
 
 }
