@@ -114,4 +114,34 @@ public class ArgumentParserTest {
                         
                         Only boolean value allowed""");
     }
+
+    @Test
+    void given_dash_l_true_dash_v_with_invalid_value_argument_list_then_throw_exception_with_error_message_that_invalid_value_for_dash_v_flag() {
+        assertThatThrownBy(() -> Argument.parse(List.of("-l", "true", "-v", "abc")))
+                .isInstanceOf(InvalidFlagValueException.class)
+                .hasMessage("""
+                        abc is invalid value for -v flag
+                        
+                        Only boolean value allowed""");
+    }
+
+    @Test
+    void given_dash_l_true_dash_v_true_dash_p_with_invalid_value_argument_list_then_throw_exception_with_error_message_that_invalid_value_for_dash_p_flag() {
+        assertThatThrownBy(() -> Argument.parse(List.of("-l", "true", "-v", "false", "-p", "cde")))
+                .isInstanceOf(InvalidFlagValueException.class)
+                .hasMessage("""
+                        cde is invalid value for -p flag
+                        
+                        Only number value allowed""");
+    }
+
+    @Test
+    void given_dash_l_true_dash_v_true_dash_p_8080_dash_d_with_invalid_value_argument_list_then_throw_exception_with_error_message_that_invalid_value_for_dash_d_flag() {
+        assertThatThrownBy(() -> Argument.parse(List.of("-l", "true", "-v", "false", "-p", "8080", "-d", "/var//logs")))
+                .isInstanceOf(InvalidFlagValueException.class)
+                .hasMessage("""
+                        /var//logs is invalid value for -d flag
+                        
+                        Only linux style directory value allowed""");
+    }
 }
