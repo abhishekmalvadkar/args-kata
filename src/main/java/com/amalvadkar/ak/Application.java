@@ -8,7 +8,7 @@ public class Application {
         try {
             Argument argument = Argument.parse(List.of(args));
             IO.println(argument);
-        } catch (InvalidFlagException e) {
+        } catch (InvalidFlagException | InvalidFlagValueException e) {
 			IO.print(e.getMessage());
         }
     }
