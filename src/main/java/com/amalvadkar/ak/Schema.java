@@ -15,10 +15,10 @@ import java.util.stream.Stream;
 @Getter
 @Accessors(fluent = true)
 public enum Schema {
-    LOGGING("logging", "-l","For logging",true, Boolean::parseBoolean),
-    VERBOSE("verbose", "-v","For verbose", true, Boolean::parseBoolean),
-    PORT("port", "-p","For port",0, Integer::parseInt),
-    LOG_DIR("logDir", "-d","For log directory", "", value -> value);
+    LOGGING("logging", "-l", "For logging", true, Boolean::parseBoolean, "^(true|false)$", "Only boolean value allowed"),
+    VERBOSE("verbose", "-v", "For verbose", true, Boolean::parseBoolean, "^(true|false)$", "Only boolean value allowed"),
+    PORT("port", "-p", "For port", 0, Integer::parseInt, "^\\d+$", "Only number value allowed"),
+    LOG_DIR("logDir", "-d", "For log directory", "", value -> value, "^(/[^/ ]+)+/?$", "Only linux style directory value allowed");
 
     private static final Map<String, Schema> FLAG_TO_SCHEMA_MAP = Stream.of(values())
             .collect(Collectors.toMap(Schema::flag, Function.identity()));
@@ -39,8 +39,10 @@ public enum Schema {
     private final String description;
     private final Object defaultValue;
     private final Function<String, Object> valueTransformer;
+    private final String regex;
+    private final String validValueMessage;
 
-    public static Schema from(String flag){
+    public static Schema from(String flag) {
         if (isNotAvailableInSchema(flag)) {
             throw new InvalidFlagException(withInvalidFlagMessage(flag));
         }
@@ -64,4 +66,14 @@ public enum Schema {
         return String.join(LINE_BREAK, flagInfos);
     }
 
+    public String invalidValueMessage(String value) {
+        return """
+                %s is invalid value for %s flag
+                
+                %s""".formatted(
+                value,
+                flag,
+                validValueMessage
+                );
+    }
 }

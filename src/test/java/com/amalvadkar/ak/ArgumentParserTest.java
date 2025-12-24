@@ -104,4 +104,14 @@ public class ArgumentParserTest {
                         -p : For port
                         -v : For verbose""");
     }
+
+    @Test
+    void given_dash_l_with_invalid_value_argument_list_then_throw_exception_with_error_message_that_invalid_value_for_dash_l_flag() {
+        assertThatThrownBy(() -> Argument.parse(List.of("-l", "5")))
+                .isInstanceOf(InvalidFlagValueException.class)
+                .hasMessage("""
+                        5 is invalid value for -l flag
+                        
+                        Only boolean value allowed""");
+    }
 }

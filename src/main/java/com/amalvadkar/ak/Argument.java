@@ -29,13 +29,24 @@ public class Argument {
                     if (isFlag(nextElement)) {
                         ReflectionUtils.setField(argument, schema.mappingName(), schema.defaultValue());
                     } else {
-                        Object flagValue = schema.valueTransformer().apply(nextElement);
+                        Object flagValue = getValue(schema, nextElement);
                         ReflectionUtils.setField(argument, schema.mappingName(), flagValue);
                     }
                 }
             }
         }
         return argument;
+    }
+
+    private static Object getValue(Schema schema, String value) {
+        if (isInvalidAsPer(schema, value)) {
+            throw new InvalidFlagValueException(schema.invalidValueMessage(value));
+        }
+        return schema.valueTransformer().apply(value);
+    }
+
+    private static boolean isInvalidAsPer(Schema schema, String value) {
+        return !value.matches(schema.regex());
     }
 
     private static boolean isFlag(String arg) {
