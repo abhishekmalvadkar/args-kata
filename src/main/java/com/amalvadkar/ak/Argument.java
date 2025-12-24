@@ -42,7 +42,7 @@ public class Argument {
         if (isInvalidAsPer(schema, value)) {
             throw new InvalidFlagValueException(schema.invalidValueMessage(value));
         }
-        return schema.valueTransformer().apply(value);
+        return schema.transform(value);
     }
 
     private static boolean isInvalidAsPer(Schema schema, String value) {

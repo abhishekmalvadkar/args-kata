@@ -15,10 +15,10 @@ import java.util.stream.Stream;
 @Getter
 @Accessors(fluent = true)
 public enum Schema {
-    LOGGING("logging", "-l", "For logging", true, Boolean::parseBoolean, "^(true|false)$", "Only boolean value allowed"),
-    VERBOSE("verbose", "-v", "For verbose", true, Boolean::parseBoolean, "^(true|false)$", "Only boolean value allowed"),
-    PORT("port", "-p", "For port", 0, Integer::parseInt, "^\\d+$", "Only number value allowed"),
-    LOG_DIR("logDir", "-d", "For log directory", "", value -> value, "^(/[^/ ]+)+/?$", "Only linux style directory value allowed");
+    LOGGING("logging", "-l", "For logging", Type.BOOLEAN),
+    VERBOSE("verbose", "-v", "For verbose", Type.BOOLEAN),
+    PORT("port", "-p", "For port", Type.NUMBER),
+    LOG_DIR("logDir", "-d", "For log directory", Type.DIRECTORY);
 
     private static final Map<String, Schema> FLAG_TO_SCHEMA_MAP = Stream.of(values())
             .collect(Collectors.toMap(Schema::flag, Function.identity()));
@@ -33,14 +33,15 @@ public enum Schema {
             Invalid flag : %s
             
             %s""";
+    private static final String INVALID_VALUE_MESSAGE = """
+            %s is invalid value for %s flag
+            
+            %s""";
 
     private final String mappingName;
     private final String flag;
     private final String description;
-    private final Object defaultValue;
-    private final Function<String, Object> valueTransformer;
-    private final String regex;
-    private final String validValueMessage;
+    private final Type type;
 
     public static Schema from(String flag) {
         if (isNotAvailableInSchema(flag)) {
@@ -67,13 +68,18 @@ public enum Schema {
     }
 
     public String invalidValueMessage(String value) {
-        return """
-                %s is invalid value for %s flag
-                
-                %s""".formatted(
-                value,
-                flag,
-                validValueMessage
-                );
+        return INVALID_VALUE_MESSAGE.formatted(value,flag,type.getValidValueMessage());
+    }
+
+    public Object defaultValue(){
+        return type.getDefaultValue();
+    }
+
+    public String regex(){
+        return type.getRegex();
+    }
+
+    public Object transform(String value){
+        return type.getValueTransformer().apply(value);
     }
 }
