@@ -50,6 +50,22 @@ public enum Schema {
         return FLAG_TO_SCHEMA_MAP.get(flag);
     }
 
+    public String invalidValueMessage(String value) {
+        return INVALID_VALUE_MESSAGE.formatted(value,flag,type.getValidValueMessage());
+    }
+
+    public Object defaultValue(){
+        return type.getDefaultValue();
+    }
+
+    public String regex(){
+        return type.getRegex();
+    }
+
+    public Object transform(String value){
+        return type.getValueTransformer().apply(value);
+    }
+
     private static String withInvalidFlagMessage(String flag) {
         return INVALID_FLAG_MESSAGE.formatted(flag, VALID_FLAGS_INFO_MESSAGE);
     }
@@ -65,21 +81,5 @@ public enum Schema {
             flagInfos.add("%s : %s".formatted(flag, schema.description));
         }
         return String.join(LINE_BREAK, flagInfos);
-    }
-
-    public String invalidValueMessage(String value) {
-        return INVALID_VALUE_MESSAGE.formatted(value,flag,type.getValidValueMessage());
-    }
-
-    public Object defaultValue(){
-        return type.getDefaultValue();
-    }
-
-    public String regex(){
-        return type.getRegex();
-    }
-
-    public Object transform(String value){
-        return type.getValueTransformer().apply(value);
     }
 }
