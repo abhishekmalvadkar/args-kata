@@ -18,7 +18,8 @@ public enum Schema {
     LOGGING("logging", "-l", "For logging", Type.BOOLEAN),
     VERBOSE("verbose", "-v", "For verbose", Type.BOOLEAN),
     PORT("port", "-p", "For port", Type.NUMBER),
-    LOG_DIR("logDir", "-d", "For log directory", Type.DIRECTORY);
+    LOG_DIR("logDir", "-d", "For log directory", Type.DIRECTORY),
+    PROFILES("profiles", "-pr", "For profiles", Type.PROFILES);
 
     private static final Map<String, Schema> FLAG_TO_SCHEMA_MAP = Stream.of(values())
             .collect(Collectors.toMap(Schema::flag, Function.identity()));

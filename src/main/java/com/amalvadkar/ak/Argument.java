@@ -14,6 +14,7 @@ public class Argument {
     private boolean verbose;
     private int port;
     private String logDir = "";
+    private List<String> profiles;
 
     public static Argument parse(List<String> elements) {
         Argument argument = new Argument();

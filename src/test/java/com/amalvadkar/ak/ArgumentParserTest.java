@@ -102,6 +102,7 @@ public class ArgumentParserTest {
                         -d : For log directory
                         -l : For logging
                         -p : For port
+                        -pr : For profiles
                         -v : For verbose""");
     }
 
@@ -143,5 +144,46 @@ public class ArgumentParserTest {
                         /var//logs is invalid value for -d flag
                         
                         Only linux style directory value allowed""");
+    }
+
+    @Test
+    void given_dash_l_true_dash_v_true_dash_p_8080_dash_d_slash_var_slash_logs_dash_pr_dev_hash_tag_qa_argument_list_then_throw_exception_with_invalid_profile_messge() {
+        assertThatThrownBy(() -> Argument.parse(List.of("-v","true","-l", "true","-p", "9090", "-d", "/usr/logs","-pr", "dev#qa")))
+                .isInstanceOf(InvalidFlagValueException.class)
+                .hasMessage("""
+                        dev#qa is invalid value for -pr flag
+                        
+                        Only comma separated alphabet values are allowed""");
+    }
+
+    @Test
+    void given_dash_l_true_dash_v_true_dash_p_8080_dash_d_slash_var_slash_logs_dash_pr_dev_comma_qa_argument_list_then_return_all_values_and_profiles_as_list_with_dev_and_qa() {
+        Argument argument = Argument.parse(List.of("-v","true","-l", "true","-p", "9090", "-d", "/usr/logs","-pr", "dev,qa"));
+
+        assertThat(argument.logging()).isTrue();
+        assertThat(argument.verbose()).isTrue();
+        assertThat(argument.port()).isEqualTo(9090);
+        assertThat(argument.logDir()).isEqualTo("/usr/logs");
+        assertThat(argument.profiles()).containsExactly("dev", "qa");
+    }
+
+    @Test
+    void given_dash_l_true_dash_v_true_dash_p_8080_dash_d_slash_var_slash_logs_dash_pr_1_comma_qa_argument_list_then_throw_exception_with_invalid_profile_messge() {
+        assertThatThrownBy(() -> Argument.parse(List.of("-v","true","-l", "true","-p", "9090", "-d", "/usr/logs","-pr", "1,qa")))
+                .isInstanceOf(InvalidFlagValueException.class)
+                .hasMessage("""
+                        1,qa is invalid value for -pr flag
+                        
+                        Only comma separated alphabet values are allowed""");
+    }
+
+    @Test
+    void given_dash_l_true_dash_v_true_dash_p_8080_dash_d_slash_var_slash_logs_dash_pr_dev_comma_qa_comma_2_argument_list_then_throw_exception_with_invalid_profile_messge() {
+        assertThatThrownBy(() -> Argument.parse(List.of("-v","true","-l", "true","-p", "9090", "-d", "/usr/logs","-pr", "dev,qa,2")))
+                .isInstanceOf(InvalidFlagValueException.class)
+                .hasMessage("""
+                        dev,qa,2 is invalid value for -pr flag
+                        
+                        Only comma separated alphabet values are allowed""");
     }
 }

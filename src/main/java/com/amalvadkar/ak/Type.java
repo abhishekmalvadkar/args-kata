@@ -9,9 +9,10 @@ import java.util.function.Function;
 @Getter
 public enum Type {
     BOOLEAN(true, Boolean::parseBoolean, "^(true|false)$", "Only boolean value allowed"),
-    NUMBER( 0, Integer::parseInt, "^\\d+$", "Only number value allowed"),
+    NUMBER(0, Integer::parseInt, "^\\d+$", "Only number value allowed"),
     STRING("", value -> value, "^.*$", ""),
-    DIRECTORY(STRING.defaultValue, STRING.valueTransformer, "^(/[^/ ]+)+/?$", "Only linux style directory value allowed");
+    DIRECTORY(STRING.defaultValue, STRING.valueTransformer, "^(/[^/ ]+)+/?$", "Only linux style directory value allowed"),
+    PROFILES("", StringToListTransformer::transform, "^[A-Za-z]+(,[A-Za-z]+)*$", "Only comma separated alphabet values are allowed");
 
     private final Object defaultValue;
     private final Function<String, Object> valueTransformer;
