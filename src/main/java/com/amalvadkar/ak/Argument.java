@@ -4,6 +4,7 @@ import lombok.Getter;
 import lombok.Setter;
 import lombok.experimental.Accessors;
 
+import java.util.ArrayList;
 import java.util.List;
 
 @Setter
@@ -14,7 +15,7 @@ public class Argument {
     private boolean verbose;
     private int port;
     private String logDir = "";
-    private List<String> profiles;
+    private List<String> profiles = new ArrayList<>();
 
     public static Argument parse(List<String> elements) {
         Argument argument = new Argument();

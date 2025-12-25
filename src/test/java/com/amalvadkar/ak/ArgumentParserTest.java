@@ -208,4 +208,15 @@ public class ArgumentParserTest {
         assertThat(argument.logDir()).isEqualTo("/usr/logs");
         assertThat(argument.profiles()).isEmpty();
     }
+
+    @Test
+    void given_dash_l_true_dash_v_true_dash_p_8080_dash_d_slash_var_slash_logs_dash_without_dash_pr_argument_list_then_return_all_values_and_profiles_with_empty_list_as_default_value() {
+        Argument argument = Argument.parse(List.of("-v","true","-l", "true","-p", "9090", "-d", "/usr/logs"));
+
+        assertThat(argument.logging()).isTrue();
+        assertThat(argument.verbose()).isTrue();
+        assertThat(argument.port()).isEqualTo(9090);
+        assertThat(argument.logDir()).isEqualTo("/usr/logs");
+        assertThat(argument.profiles()).isEmpty();
+    }
 }
