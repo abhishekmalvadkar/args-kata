@@ -147,7 +147,7 @@ public class ArgumentParserTest {
     }
 
     @Test
-    void given_dash_l_true_dash_v_true_dash_p_8080_dash_d_slash_var_slash_logs_dash_pr_dev_hash_tag_qa_argument_list_then_throw_exception_with_invalid_profile_messge() {
+    void given_dash_l_true_dash_v_true_dash_p_8080_dash_d_slash_var_slash_logs_dash_pr_dev_hash_tag_qa_argument_list_then_throw_exception_with_invalid_profile_message() {
         assertThatThrownBy(() -> Argument.parse(List.of("-v","true","-l", "true","-p", "9090", "-d", "/usr/logs","-pr", "dev#qa")))
                 .isInstanceOf(InvalidFlagValueException.class)
                 .hasMessage("""
@@ -168,7 +168,7 @@ public class ArgumentParserTest {
     }
 
     @Test
-    void given_dash_l_true_dash_v_true_dash_p_8080_dash_d_slash_var_slash_logs_dash_pr_1_comma_qa_argument_list_then_throw_exception_with_invalid_profile_messge() {
+    void given_dash_l_true_dash_v_true_dash_p_8080_dash_d_slash_var_slash_logs_dash_pr_1_comma_qa_argument_list_then_throw_exception_with_invalid_profile_message() {
         assertThatThrownBy(() -> Argument.parse(List.of("-v","true","-l", "true","-p", "9090", "-d", "/usr/logs","-pr", "1,qa")))
                 .isInstanceOf(InvalidFlagValueException.class)
                 .hasMessage("""
@@ -178,7 +178,7 @@ public class ArgumentParserTest {
     }
 
     @Test
-    void given_dash_l_true_dash_v_true_dash_p_8080_dash_d_slash_var_slash_logs_dash_pr_dev_comma_qa_comma_2_argument_list_then_throw_exception_with_invalid_profile_messge() {
+    void given_dash_l_true_dash_v_true_dash_p_8080_dash_d_slash_var_slash_logs_dash_pr_dev_comma_qa_comma_2_argument_list_then_throw_exception_with_invalid_profile_message() {
         assertThatThrownBy(() -> Argument.parse(List.of("-v","true","-l", "true","-p", "9090", "-d", "/usr/logs","-pr", "dev,qa,2")))
                 .isInstanceOf(InvalidFlagValueException.class)
                 .hasMessage("""
