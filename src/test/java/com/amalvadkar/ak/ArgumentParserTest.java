@@ -186,4 +186,15 @@ public class ArgumentParserTest {
                         
                         Only comma separated alphabet values are allowed""");
     }
+
+    @Test
+    void given_dash_l_true_dash_v_true_dash_p_8080_dash_d_slash_var_slash_logs_dash_pr_dev_comma_qa_local_argument_list_then_return_all_values_and_profiles_as_list_with_dev_and_qa_local() {
+        Argument argument = Argument.parse(List.of("-v","true","-l", "true","-p", "9090", "-d", "/usr/logs","-pr", "dev,qa,local"));
+
+        assertThat(argument.logging()).isTrue();
+        assertThat(argument.verbose()).isTrue();
+        assertThat(argument.port()).isEqualTo(9090);
+        assertThat(argument.logDir()).isEqualTo("/usr/logs");
+        assertThat(argument.profiles()).containsExactly("dev", "qa","local");
+    }
 }
