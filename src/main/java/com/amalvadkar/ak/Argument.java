@@ -15,30 +15,49 @@ public class Argument {
     private int port;
     private String logDir = "";
 
-    public static Argument parse(List<String> arguments) {
+    public static Argument parse(List<String> elements) {
         Argument argument = new Argument();
-
-        for (String arg : arguments) {
-            if (isFlag(arg)) {
-                int argPosition = arguments.indexOf(arg);
-                Schema schema = Schema.from(arg);
-                if (flagAtLastPosition(arguments, argPosition)) {
-                    ReflectionUtils.setField(argument, schema.mappingName(), schema.defaultValue());
-                } else {
-                    String nextElement = arguments.get(argPosition + 1);
-                    if (isFlag(nextElement)) {
-                        ReflectionUtils.setField(argument, schema.mappingName(), schema.defaultValue());
-                    } else {
-                        Object flagValue = getValue(schema, nextElement);
-                        ReflectionUtils.setField(argument, schema.mappingName(), flagValue);
-                    }
-                }
+        for (String currentElement : elements) {
+            if (isFlag(currentElement)) {
+                processFlag(elements, currentElement, argument);
             }
         }
         return argument;
     }
 
-    private static Object getValue(Schema schema, String value) {
+    private static void processFlag(List<String> elements, String flag, Argument argument) {
+        Schema schema = Schema.from(flag);
+        int flagPosition = elements.indexOf(flag);
+        if (isLastIn(elements, flagPosition)) {
+            setDefaultValue(argument, schema);
+        } else {
+            processIfFlagPositionIsNotLast(elements, argument, flagPosition, schema);
+        }
+    }
+
+    private static void processIfFlagPositionIsNotLast(List<String> elements, Argument argument, int flagPosition, Schema schema) {
+        String nextElement = elements.get(flagPosition + 1);
+        if (isFlag(nextElement)) {
+            setDefaultValue(argument, schema);
+        } else {
+            setUserDefinedFlagValue(argument, schema, nextElement);
+        }
+    }
+
+    private static void setUserDefinedFlagValue(Argument argument, Schema schema, String userDefinedFlagValue) {
+        Object transformedFlagValue = getTransformedFlagValueIfValid(schema, userDefinedFlagValue);
+        setFlagValue(argument, schema, transformedFlagValue);
+    }
+
+    private static void setFlagValue(Argument argument, Schema schema, Object flagValue) {
+        ReflectionUtils.setField(argument, schema.mappingName(), flagValue);
+    }
+
+    private static void setDefaultValue(Argument argument, Schema schema) {
+        ReflectionUtils.setField(argument, schema.mappingName(), schema.defaultValue());
+    }
+
+    private static Object getTransformedFlagValueIfValid(Schema schema, String value) {
         if (isInvalidAsPer(schema, value)) {
             throw new InvalidFlagValueException(schema.invalidValueMessage(value));
         }
@@ -53,8 +72,8 @@ public class Argument {
         return arg.startsWith("-");
     }
 
-    private static boolean flagAtLastPosition(List<String> arguments, int loggingFlagPosition) {
-        return loggingFlagPosition == arguments.size() - 1;
+    private static boolean isLastIn(List<String> elements, int flagPosition) {
+        return flagPosition == elements.size() - 1;
     }
 
     @Override
