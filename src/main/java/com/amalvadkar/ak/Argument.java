@@ -85,13 +85,15 @@ public class Argument {
                     "logging" : %s,
                     "verbose" : %s,
                     "port" : %s,
-                    "directory" : "%s"
+                    "directory" : "%s",
+                    "profiles" : %s
                 }
                 """.formatted(
                 logging,
                 verbose,
                 port,
-                logDir
+                logDir,
+                profiles
         );
     }
 }
