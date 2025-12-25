@@ -3,6 +3,7 @@ package com.amalvadkar.ak;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 
+import java.util.List;
 import java.util.function.Function;
 
 @RequiredArgsConstructor
@@ -12,7 +13,7 @@ public enum Type {
     NUMBER(0, Integer::parseInt, "^\\d+$", "Only number value allowed"),
     STRING("", value -> value, "^.*$", ""),
     DIRECTORY(STRING.defaultValue, STRING.valueTransformer, "^(/[^/ ]+)+/?$", "Only linux style directory value allowed"),
-    PROFILES("", StringToListTransformer::transform, "^[A-Za-z]+(,[A-Za-z]+)*$", "Only comma separated alphabet values are allowed");
+    PROFILES(List.of(), StringToListTransformer::transform, "^[A-Za-z]+(,[A-Za-z]+)*$", "Only comma separated alphabet values are allowed");
 
     private final Object defaultValue;
     private final Function<String, Object> valueTransformer;
